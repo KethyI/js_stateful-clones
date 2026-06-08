@@ -17,22 +17,24 @@ function transformStateWithClones(state, actions) {
         for (const key in clone) {
           delete clone[key];
         }
-        result.push(clone);
+        result.push({ ...clone });
         break;
 
       case 'addProperties':
         Object.assign(clone, action.extraData);
-        result.push(clone);
+        result.push({ ...clone });
         break;
 
       case 'removeProperties':
-        for (const key in action.keysToRemove) {
+        for (const key of action.keysToRemove) {
           delete clone[key];
         }
-        result.push(clone);
+        result.push({ ...clone });
         break;
     }
   }
+
+  return result;
 }
 
 module.exports = transformStateWithClones;
