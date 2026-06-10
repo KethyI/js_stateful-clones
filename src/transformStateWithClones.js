@@ -9,29 +9,31 @@
 
 function transformStateWithClones(state, actions) {
   const result = [];
-  const clone = { ...state };
+  const stateCopy = { ...state };
 
   for (const action of actions) {
     switch (action.type) {
       case 'clear':
-        for (const key in clone) {
-          delete clone[key];
+        for (const key in stateCopy) {
+          delete stateCopy[key];
         }
-        result.push({ ...clone });
         break;
 
       case 'addProperties':
-        Object.assign(clone, action.extraData);
-        result.push({ ...clone });
+        Object.assign(stateCopy, action.extraData);
         break;
 
       case 'removeProperties':
         for (const key of action.keysToRemove) {
-          delete clone[key];
+          delete stateCopy[key];
         }
-        result.push({ ...clone });
         break;
+
+      default:
+        throw new Error('Something went wrong');
     }
+
+    result.push({ ...stateCopy });
   }
 
   return result;
